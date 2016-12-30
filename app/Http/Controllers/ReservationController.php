@@ -19,7 +19,7 @@ class ReservationController extends Controller
      * Function Used for reset the reservation
      */
     public function reset(){
-        Seat::delete();
+        Seat::truncate();
         return 'success';
     }
 
@@ -50,7 +50,7 @@ class ReservationController extends Controller
                 $rowIndex = $calculations/7;
 		        floor($rowIndex);
                 $colIndex = $calculations%7;
-                $seat[$rowIndex -1][$colIndex] = 1;
+                $seat[$rowIndex][$colIndex] = 1;
             }
         }
 
@@ -191,7 +191,7 @@ class ReservationController extends Controller
                     $seatNo = $rowIndex*7 + $colIndex;
                     $seatsObj = Seat::where('seats', $seatNo)->get();
                     if(count($seatsObj) == 0)
-                        Seat::insert(['seat' => $seatNo]);
+                        Seat::insert(['seats' => $seatNo]);
                 }
             }
         }

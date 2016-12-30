@@ -162,23 +162,19 @@ class ReservationController extends Controller
         $booked = 0;
         for ($i = 11; $i >= 0; $i--) {
             $rowLimit = ($i == 11) ? 3 : 7;
-                for ($j = 0; $j < $rowLimit; $j++) {
-		   if (!$booked) {
-               if ($seat[$i][$j] == 0) {
-                   $seat[$i][$j] = 1;
-                   $counter++;
-               }
-           }
-                    if(!$booked){
-                        if ($seat[$i][$j] == 0) {
-                            $seat[$i][$j] = 1;
-                            $counter++;
-                        }
+
+            for ($j = 0; $j < $rowLimit; $j++)
+            {
+		        if (!$booked) {
+                    if ($seat[$i][$j] == 0) {
+                        $seat[$i][$j] = 1;
+                        $counter++;
                     }
+                }
 		   }
 
-                    if ($counter == $seatBooking)
-                        $booked = 1;
+		   if ($counter == $seatBooking)
+               $booked = 1;
         }
         return $seat;
     }
@@ -189,7 +185,7 @@ class ReservationController extends Controller
      */
     public function printArray($bookingSeat)
     {
-        for($rowIndex =0 ; $rowIndex < 11; $rowIndex ++){
+        for($rowIndex =0 ; $rowIndex <= 11; $rowIndex ++){
             for($colIndex = 0; $colIndex < 7; $colIndex++){
                 if($bookingSeat[$rowIndex][$colIndex] == 1){
                     $seatNo = $rowIndex*7 + $colIndex;

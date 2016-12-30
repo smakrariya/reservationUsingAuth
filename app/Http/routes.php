@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });*/
 Route::auth();
-Route::get(['/','middleware'=> ['auth']], 'ReservationController@index');
+Route::get('/', 'ReservationController@index');
 Route::get('/save', 'ReservationController@calculation');
 Route::get('/back', 'ReservationController@index');
 Route::get('/reset', 'ReservationController@reset');

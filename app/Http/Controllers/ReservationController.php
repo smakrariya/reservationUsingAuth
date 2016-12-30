@@ -171,10 +171,12 @@ class ReservationController extends Controller
                         $counter++;
                     }
                 }
+
+                if ($counter == $seatBooking)
+                    $booked = 1;
 		   }
 
-		   if ($counter == $seatBooking)
-               $booked = 1;
+
         }
         return $seat;
     }

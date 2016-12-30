@@ -53,6 +53,7 @@ class ReservationController extends Controller
             $seats = $seats[0];
             var_dump($seats);die;
         }
+        $seat = [];
 
         if($seatBooked)
             $bookedSeat = $this->SeatBooking($seat, $seatBooked);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests;
@@ -9,15 +10,6 @@ use App\Http\Requests;
 class ReservationController extends Controller
 {
     public function index(){
-        $seat = [];
-        for ($i = 11; $i >= 0; $i--) {
-            for ($j = 0; $j < 7; $j++) {
-                $seat[$i][$j] = 0;
-            }
-        }
-
-        if(!Session::has('reservation'))
-            Session::put('reservation', $seat);
 
         return view('Reservation');
     }
@@ -45,7 +37,31 @@ class ReservationController extends Controller
      */
     public function calculation(Request $request)
     {
+        $seat = [];
+        for ($i = 11; $i >= 0; $i--) {
+            for ($j = 0; $j < 7; $j++) {
+                $seat[$i][$j] = 0;
+            }
+        }
+
         $seatBooked = $request['seatsNo'];
+        $seats = Seat::select('seats')->get();
+
+        if(count($seats))
+        {
+	  var_dump(count($seats[0]));die;
+            foreach ($seats as $k => $v){
+                $calculations = $k['seats'];
+
+                $i = $calculations/7;
+		floor($i);
+                $j = $calculations%7;
+var_dump($i);die;
+                $seat[$i -1][$j] = 1;
+            }
+        }
+
+        var_dump($seat);die;
         $seat = Session::get('reservation');
 
         if($seatBooked)
@@ -156,17 +172,23 @@ class ReservationController extends Controller
         $booked = 0;
         for ($i = 11; $i >= 0; $i--) {
             $rowLimit = ($i == 11) ? 3 : 7;
-            if (!$booked) {
                 for ($j = 0; $j < $rowLimit; $j++) {
-                    if ($seat[$i][$j] == 0) {
-                        $seat[$i][$j] = 1;
-                        $counter++;
+		   if (!$booked) {
+               if ($seat[$i][$j] == 0) {
+                   $seat[$i][$j] = 1;
+                   $counter++;
+               }
+           }
+                    if(!$booked){
+                        if ($seat[$i][$j] == 0) {
+                            $seat[$i][$j] = 1;
+                            $counter++;
+                        }
                     }
+		   }
 
                     if ($counter == $seatBooking)
                         $booked = 1;
-                }
-            }
         }
         return $seat;
     }

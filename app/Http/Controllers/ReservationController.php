@@ -45,19 +45,23 @@ class ReservationController extends Controller
         }
 
         $seatBooked = $request['seatsNo'];
-        $seats = Seat::get();
+        $seats = Seat::select('seats')->get();
+
         if(count($seats))
         {
-            $seats = $seats[0];
-            foreach ($seats as $k){
+	  var_dump($seats[0]);die;
+            foreach ($seats as $k => $v){
                 $calculations = $k['seats'];
-                $i = (int)$calculations/7;
+
+                $i = $calculations/7;
+		floor($i);
                 $j = $calculations%7;
+var_dump($i);die;
                 $seat[$i -1][$j] = 1;
             }
         }
 
-        var_dump($seats);die;
+        var_dump($seat);die;
         $seat = Session::get('reservation');
 
         if($seatBooked)

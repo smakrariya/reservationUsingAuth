@@ -10,15 +10,6 @@ use App\Http\Requests;
 class ReservationController extends Controller
 {
     public function index(){
-        $seat = [];
-        for ($i = 11; $i >= 0; $i--) {
-            for ($j = 0; $j < 7; $j++) {
-                $seat[$i][$j] = 0;
-            }
-        }
-
-        if(!Session::has('reservation'))
-            Session::put('reservation', $seat);
 
         return view('Reservation');
     }
@@ -46,14 +37,26 @@ class ReservationController extends Controller
      */
     public function calculation(Request $request)
     {
+        $seat = [];
+        for ($i = 11; $i >= 0; $i--) {
+            for ($j = 0; $j < 7; $j++) {
+                $seat[$i][$j] = 0;
+            }
+        }
+
         $seatBooked = $request['seatsNo'];
         $seats = Seat::get();
         if(count($seats))
         {
             $seats = $seats[0];
-            var_dump($seats);die;
+            foreach ($seatBooked as $k){
+                $calculations = $k['seats'];
+                $i = (int)$calculations/7;
+                $j = $calculations%7;
+                $seat[$i -1][$j] = 1;
+            }
         }
-        $seat = [];
+        $seat = Session::get('reservation');
 
         if($seatBooked)
             $bookedSeat = $this->SeatBooking($seat, $seatBooked);

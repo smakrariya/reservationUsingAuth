@@ -45,7 +45,7 @@ class ReservationController extends Controller
         if($seatsBookingLimit)
         {
             for ($i=0; $i< $seatsBookingLimit;$i++){
-                $calculations = $seats[$i];
+                $calculations = $seats[$i]['seats'];
 
                 $rowIndex = $calculations/7;
 		        floor($rowIndex);

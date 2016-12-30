@@ -49,7 +49,7 @@ class ReservationController extends Controller
         if(count($seats))
         {
             $seats = $seats[0];
-            foreach ($seatBooked as $k){
+            foreach ($seats as $k){
                 $calculations = $k['seats'];
                 $i = (int)$calculations/7;
                 $j = $calculations%7;

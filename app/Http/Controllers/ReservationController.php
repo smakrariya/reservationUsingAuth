@@ -195,7 +195,7 @@ class ReservationController extends Controller
                     $seatNo = $rowIndex*7 + $colIndex;
                     $seatsObj = Seat::where('seats', $seatNo)->get();
                     if(count($seatsObj) == 0)
-                        Seat::insert('seat', $seatNo);
+                        Seat::insert(['seat' => $seatNo]);
                 }
             }
         }

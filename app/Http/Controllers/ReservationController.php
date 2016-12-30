@@ -56,6 +56,8 @@ class ReservationController extends Controller
                 $seat[$i -1][$j] = 1;
             }
         }
+
+        var_dump($seats);die;
         $seat = Session::get('reservation');
 
         if($seatBooked)

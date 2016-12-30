@@ -24,4 +24,4 @@ Route::group(['prefix' => 'reservation', 'middleware' => ['auth']], function (){
 
 
 
-//Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');

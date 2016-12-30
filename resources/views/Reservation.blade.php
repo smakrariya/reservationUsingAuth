@@ -78,7 +78,7 @@
         function reservationBooking(seat) {
             $.ajax({
                 type:'get',
-                url:'/save?seatsNo='+seat,
+                url:'reservation/save?seatsNo='+seat,
                 success: function (data) {
                     if(typeof data == "string"){
                         alert (data);
@@ -105,7 +105,7 @@
         function resetBooking() {
             $.ajax({
                 type:'get',
-                url:'/reset',
+                url:'reservation/reset',
                 success: function (data) {
                     if(data == "success") {
                         drawSeats();

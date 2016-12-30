@@ -19,14 +19,7 @@ class ReservationController extends Controller
      * Function Used for reset the reservation
      */
     public function reset(){
-        $seat = [];
-        for ($i = 11; $i >= 0; $i--) {
-            for ($j = 0; $j < 7; $j++) {
-                $seat[$i][$j] = 0;
-            }
-        }
-
-        Session::put('reservation', $seat);
+        Seat::delete();
         return 'success';
     }
 
@@ -47,22 +40,19 @@ class ReservationController extends Controller
         $seatBooked = $request['seatsNo'];
         $seats = Seat::select('seats')->get();
 
-        if(count($seats))
-        {
-	  var_dump($seats[0]);die;
-            foreach ($seats as $k => $v){
-                $calculations = $k['seats'];
+        $seatsBookingLimit = count($seats);
 
-                $i = $calculations/7;
-		floor($i);
-                $j = $calculations%7;
-var_dump($i);die;
-                $seat[$i -1][$j] = 1;
+        if($seatsBookingLimit)
+        {
+            for ($i=0; $i< $seatsBookingLimit;$i++){
+                $calculations = $seats[$i];
+
+                $rowIndex = $calculations/7;
+		        floor($rowIndex);
+                $colIndex = $calculations%7;
+                $seat[$rowIndex -1][$colIndex] = 1;
             }
         }
-
-        var_dump($seat);die;
-        $seat = Session::get('reservation');
 
         if($seatBooked)
             $bookedSeat = $this->SeatBooking($seat, $seatBooked);
@@ -199,7 +189,16 @@ var_dump($i);die;
      */
     public function printArray($bookingSeat)
     {
-        Session::put(['reservation' => $bookingSeat]);
+        for($rowIndex =0 ; $rowIndex < 11; $rowIndex ++){
+            for($colIndex = 0; $colIndex < 7; $colIndex++){
+                if($bookingSeat[$rowIndex][$colIndex] == 1){
+                    $seatNo = $rowIndex*7 + $colIndex;
+                    $seatsObj = Seat::where('seats', $seatNo)->get();
+                    if(count($seatsObj) == 0)
+                        Seat::insert('seat', $seatNo);
+                }
+            }
+        }
         return ($bookingSeat);
     }
 

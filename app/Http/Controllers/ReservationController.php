@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests;
@@ -46,7 +47,12 @@ class ReservationController extends Controller
     public function calculation(Request $request)
     {
         $seatBooked = $request['seatsNo'];
-        $seat = Session::get('reservation');
+        $seats = Seat::get();
+        if(count($seats))
+        {
+            $seats = $seats[0];
+            var_dump($seats);die;
+        }
 
         if($seatBooked)
             $bookedSeat = $this->SeatBooking($seat, $seatBooked);
